@@ -1,4 +1,4 @@
-import { flatCategories, findBestTimelineCategory } from './categories'
+import { flatCategories, findBestVisibleCategory } from './categories'
 
 describe('categories', () => {
   describe('flatCategories', () => {
@@ -8,17 +8,17 @@ describe('categories', () => {
       })
     })
   })
-  describe('findBestTimelineCategory', () => {
+  describe('findBestVisibleCategory', () => {
     it('works for sub-items', () => {
-      const category = findBestTimelineCategory(['хобби', 'Путь 3kGM'])
-      expect(category).toEqual('Развитие')
+      const category = findBestVisibleCategory(['Health'])
+      expect(category).toEqual('Growth')
     })
     it('works for another case', () => {
-      const category = findBestTimelineCategory(['Путь Отца'])
-      expect(category).toEqual('Семья')
+      const category = findBestVisibleCategory(['Father'])
+      expect(category).toEqual('Family')
     })
     it('return undefined if tags are absent', () => {
-      const category = findBestTimelineCategory()
+      const category = findBestVisibleCategory()
       expect(category).toBeUndefined()
     })
   })

@@ -1,83 +1,6 @@
-const defaultCategories = [{ title: 'Creativity' }, { title: 'Growth' }, { title: 'Family' }]
+const defaultCategories = [{ title: 'Creativity' }, { title: 'Growth', includes: [{title: 'Health', show: false}] }, { title: 'Family', tags: ['Father'] }]
 
-const categoriesTree = [
-  {
-    title: 'Творчество',
-    tags: ['Путь Создателя', 'Создатель'],
-    showOnTimeline: true,
-    includes: [
-      {
-        title: 'Создатель продуктов',
-        tags: ['Путь Создателя Продуктов'],
-        showOnTimeline: false,
-        includes: [
-          {
-            id: 'SDET',
-            title: 'SDET-архитектор',
-            showOnTimeline: false,
-            includes: [{ id: 'cpp', id: 'epic' }]
-          }
-        ]
-      },
-      {
-        title: 'EPAMer',
-        tags: ['Путь EPAMа'],
-        showOnTimeline: false,
-        includes: [{ title: 'Epic Games SDET Architector', id: 'epic', showOnTimeline: false }]
-      },
-      { title: 'Блогер', showOnTimeline: false }
-    ]
-  },
-  {
-    title: 'Развитие',
-    tags: ['Путь Мастера Жизни', 'Мастер Жизни'],
-    includes: [
-      {
-        title: 'Спортсмен',
-        id: 'sport',
-        showOnTimeline: false,
-        includes: [
-          {
-            title: 'Мастер спорта',
-            tags: ['Путь Мастера Спорта'],
-            id: 'ms',
-            showOnTimeline: false,
-            includes: [
-              {
-                id: 'chess',
-                title: 'Шахматист',
-                showOnTimeline: false,
-                includes: [{ title: '3kGM', id: '3kgm', showOnTimeline: false }]
-              }
-            ]
-          }
-        ]
-      },
-      { title: 'Полиглот', showOnTimeline: false },
-      {
-        title: 'Разработчик',
-        tags: [
-          'Путь Мастера Разработки',
-          'Путь Разработчика',
-          'Путь Программиста',
-          'Мастер Разработки'
-        ],
-        showOnTimeline: false,
-        includes: [{ id: 'cpp', title: 'Мастер С++', showOnTimeline: false }]
-      },
-      {
-        title: 'Игрок',
-        showOnTimeline: false,
-        includes: [{ title: 'Игрок в покер', showOnTimeline: false }, { id: 'chess' }]
-      }
-    ]
-  },
-  {
-    title: 'Семья',
-    tags: ['Путь Отца', 'Отец'],
-    includes: [{ title: 'финансы', tags: 'Путь Инвестора', showOnTimeline: false }]
-  }
-]
+const categoriesTree = defaultCategories;
 
 const flat = (cats) =>
   cats.flatMap((cat) => (cat.includes?.length ? [cat, ...flat(cat.includes)] : cat))
@@ -85,10 +8,10 @@ const flat = (cats) =>
 export const flatCategories = flat(categoriesTree).filter(({ title }) => title)
 
 export const timelineCategories = flatCategories.filter(
-  ({ showOnTimeline }) => showOnTimeline === undefined || showOnTimeline === true
+  ({ show }) => show === undefined || show === true
 )
 
-export function findBestTimelineCategory(tags) {
+export function findBestVisibleCategory(tags) {
   if (!tags?.length) return undefined
   let list = [...categoriesTree]
   let best = list[0]
@@ -101,7 +24,7 @@ export function findBestTimelineCategory(tags) {
       list.push(...candidate.includes.map((child) => ({ ...child, parent: candidate })))
     }
   }
-  while (best && 'showOnTimeline' in best && !best.showOnTimeline) {
+  while (best && 'show' in best && !best.show) {
     best = best.parent
   }
   return best?.title

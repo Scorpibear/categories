@@ -7,8 +7,8 @@
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "tdd": "npm test -- --watch",
-    "cover": "nyc --check-coverage",
-    "lint": "eslint src test"
+    "cover": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "lint": "eslint src"
   },
   "files": [
     "lib",
@@ -37,6 +37,7 @@
     "chai": "^5.1.2",
     "cross-env": "^7.0.3",
     "eslint": "^9.17.0",
+    "eslint-plugin-jest": "^28.10.0",
     "globals": "^15.14.0",
     "nyc": "^17.1.0"
   },
