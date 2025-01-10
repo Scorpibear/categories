@@ -7,6 +7,7 @@ export default [
   {
     plugins: { jest: pluginJest },
     languageOptions: { globals: {...globals.browser, ...pluginJest.environments.globals.globals} },
+    env: { jest: true, browser: true, node: true }
   },
   pluginJs.configs.recommended,
 ];
